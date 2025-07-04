@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <fstream>
 
 using namespace std;
@@ -23,15 +24,17 @@ class Paleta{
     double valores[100];
 
     public:
-
-    void inicializar(int qtd, Cor c[],double v[]){
+    Paleta(){
+        quantidade = 0;
+    }
+    Paleta(int qtd, Cor c[],double v[]){
         quantidade = qtd;
         for(int i = 0; i< quantidade; i++){
             cores[i] = c[i];
             valores[i] = v[i];
         }
     }
-    bool lerArquivo(const char* nomeArquivo){
+    bool lerArquivo(string nomeArquivo){
         ifstream arquivo(nomeArquivo);
 
         if(!arquivo.is_open()){
@@ -53,29 +56,20 @@ class Paleta{
         return true;
 
     }
-    
-    Cor consultarCor(double valor) {
-        if (quantidade == 0) return Cor();
-
-        if (valor <= valores[0]) return cores[0];
-        if (valor >= valores[quantidade - 1]) return cores[quantidade - 1];
-
-        for (int i = 0; i < quantidade - 1; i++) {
-            if (valor >= valores[i] && valor < valores[i + 1]) {
+    Cor consultarCor(double valor){
+        for(int i =0;i<quantidade;i++){
+            if(valor == valores[i]){
                 return cores[i];
             }
         }
-
-        return Cor();  // fallback
-    }
-
-    
-
+        cout << "Valor não encontrado!\n";
+        return Cor();
+}
 };
 
 int main(){
     Paleta p;
-    int val;
+    double val;
     if(p.lerArquivo("teste.txt")){
         cout << "Digite o valor que deseja verificar:\n";
         cin >> val;
@@ -86,6 +80,7 @@ int main(){
     }
     else{
         cout << "Erro na leitura!\n";
+        cout << "Arquivo não foi lido.\n";
     }
 
     return 0;
