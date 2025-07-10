@@ -2,16 +2,20 @@
 #ifndef COR_H
 #define COR_H
 
-// Estrutura para representar uma cor no formato RGB.
-// Cada componente de cor é um valor entre 0 e 255.
-struct Cor {
-    unsigned char r, g, b;
+class Cor{
+    private:
 
-    // Construtor padrão que inicializa a cor como preto.
-    Cor() : r(0), g(0), b(0) {}
+    int R,G,B;
 
-    // Construtor que inicializa a cor com valores específicos.
-    Cor(unsigned char red, unsigned char green, unsigned char blue) : r(red), g(green), b(blue) {}
-};
+    public:
 
+    Cor() : R(0), G(0), B(0){} //construtor padrão
+
+    Cor(int r,int g, int b) : R(r), G(g), B(b){}  //construtor para receber valores rgb
+
+    void imprimirCor(){
+
+        cout << "(" << R << ", " << G << ", " << B << ")";
+
+    }
 #endif // COR_H
