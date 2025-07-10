@@ -32,7 +32,7 @@ public:
     void salvar(string nomeArquivo) {
         ofstream arquivo(nomeArquivo);
         if (!arquivo.is_open()) {
-            cout << "Erro ao4245 abrir o arquivo para salvar\n";
+            cout << "Erro ao abrir o arquivo para salvar\n";
             return;
         }
 
