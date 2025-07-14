@@ -1,18 +1,21 @@
 #include <iostream>
 #include <ctime>
+#include <iomanip>
+#include <cmath>
 using namespace std;
 
-const int tam = 5;  // Deve ser 2^n + 1, elinha: 5 = 2^2 + 1
+const int tam = 5.0;  // Deve ser 2^n + 1, elinha: 5 = 2^2 + 1
 
-int aleatorio() {
-    srand(time(NULL));
-    return rand()/100;
+double aleatorio() {
+    double a = static_cast<double>(rand()) / RAND_MAX;//deixa entre 0 e 1
+   // a = round(a * 100.0) / 100.0; //deixa com apenas duas casa decimais depois do ponto
+    return a;
 }
 
 // Diamond Step
-void diamond(int mat[tam][tam], int linha, int coluna, int tamanho) {
+void diamond(double mat[tam][tam], int linha, int coluna, int tamanho) {
     int pontocentral = tamanho / 2;
-    int media = (
+    double media = (
         mat[linha][coluna] +
         mat[linha + tamanho][coluna] +
         mat[linha][coluna + tamanho] +
@@ -22,46 +25,64 @@ void diamond(int mat[tam][tam], int linha, int coluna, int tamanho) {
 }
 
 // Square Step
-void square(int mat[tam][tam], int linha, int coluna, int tamanho) {
-    int pontocentral = tamanho / 2;
-    int linhacentro = linha + pontocentral;
-    int colunacentro= coluna + pontocentral;
 
-    // Cima
-    if (linha >= 0 && colunacentro< tam) //delimita para não ir para indices fora da matriz
-        mat[linha][colunacentro] = (mat[linha][coluna] + mat[linha][coluna + tamanho] + mat[linha + pontocentral][coluna + pontocentral]) / 3;
+void square(double mat[tam][tam], int linha, int coluna, int tamanho) {
+    int meio   = tamanho / 2;
+    int l_meio = linha  + meio;
+    int c_meio = coluna + meio;
 
-    // Bailinhao
-    if (linha + tamanho < tam && colunacentro< tam)
-        mat[linha + tamanho][colunacentro] = (mat[linha + tamanho][coluna] + mat[linha + tamanho][coluna + tamanho] + mat[linha + pontocentral][coluna + pontocentral]) / 3;
+    //aresta de cima
+    if (linha >= 0 && c_meio < tam) {
+        
+        double canto_esq  = mat[linha][coluna];
+        double canto_dir  = mat[linha][coluna + tamanho];
+        mat[linha][c_meio] = (canto_esq + canto_dir) / 2;
+    }
 
-    // Esquerda
-    if (coluna >= 0 && linhacentro < tam)
-        mat[linhacentro][coluna] = (mat[linha][coluna] + mat[linha + tamanho][coluna] + mat[linha + pontocentral][coluna + pontocentral]) / 3;
+    //aresta de baixo
+    if (linha + tamanho < tam && c_meio < tam) {
+        double canto_esq  = mat[linha + tamanho][coluna];
+        double canto_dir  = mat[linha + tamanho][coluna + tamanho];
+        mat[linha + tamanho][c_meio] = (canto_esq + canto_dir) / 2;
+    }
 
-    // Direita
-    if (coluna + tamanho < tam && linhacentro < tam)
-        mat[linhacentro][coluna + tamanho] = (mat[linha][coluna + tamanho] + mat[linha + tamanho][coluna + tamanho] + mat[linha + pontocentral][coluna + pontocentral]) / 3;
+    //Aresta da esquerda
+    if (coluna >= 0 && l_meio < tam) {
+        double canto_cima = mat[linha][coluna];
+        double canto_baixo = mat[linha + tamanho][coluna];
+        mat[l_meio][coluna] = (canto_cima + canto_baixo) / 2;
+    }
+
+    //aresta da direita
+    if (coluna + tamanho < tam && l_meio < tam) {
+        double canto_cima = mat[linha][coluna + tamanho];
+        double canto_baixo = mat[linha + tamanho][coluna + tamanho];
+        mat[l_meio][coluna + tamanho] = (canto_cima + canto_baixo) / 2;
+    }
+
 }
 
-void printMatrilinha(int mat[tam][tam]) {
+void printMatrilinha(double mat[tam][tam]) {
     for (int i = 0; i < tam; i++) {
         for (int j = 0; j < tam; j++) {
             cout.width(3);
-            cout << mat[i][j] << " ";
+            cout << mat[i][j] << "     ";
         }
         cout << endl;
     }
 }
 
 int main() {
-    int mat[tam][tam] = {0};
+    srand(static_cast<unsigned>(time(nullptr)));     // semente única
+   
+
+    double mat[tam][tam] = {0};
 
     // Define os 4 cantos com valores aleatórios
     mat[0][0] = aleatorio();
-    mat[0][tam - 1] = aleatorio()-1;
-    mat[tam - 1][0] = aleatorio()+1;
-    mat[tam - 1][tam - 1] = aleatorio()-2;
+    mat[0][tam - 1] = aleatorio();
+    mat[tam - 1][0] = aleatorio();
+    mat[tam - 1][tam - 1] = aleatorio();
 
     int tamanho = tam - 1;
 
@@ -86,7 +107,7 @@ int main() {
             }
         }
 
-        tamanho /= 2;
+        tamanho = tamanho / 2;
        
         
     }
