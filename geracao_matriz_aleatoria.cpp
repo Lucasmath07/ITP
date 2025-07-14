@@ -12,7 +12,7 @@ double aleatorio() {
     return a;
 }
 
-// Diamond Step
+
 void diamond(double mat[tam][tam], int linha, int coluna, int tamanho) {
     int pontocentral = tamanho / 2;
     double media = (
@@ -24,7 +24,6 @@ void diamond(double mat[tam][tam], int linha, int coluna, int tamanho) {
     mat[linha + pontocentral][coluna + pontocentral] = media + aleatorio()*0.9; // variação aleatória
 }
 
-// Square Step
 
 void square(double mat[tam][tam], int linha, int coluna, int tamanho) {
     int meio   = tamanho / 2;
@@ -73,7 +72,7 @@ void printMatrilinha(double mat[tam][tam]) {
 }
 
 int main() {
-    srand(static_cast<unsigned>(time(nullptr)));     // semente única
+    srand(static_cast<unsigned>(time(nullptr)));     // semente única para geração dos numneros aletaorios
    
 
     double mat[tam][tam] = {0};
